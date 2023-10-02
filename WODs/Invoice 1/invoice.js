@@ -10,7 +10,7 @@ let extended_price1 = quantity1 *price1;
 let item2= 'Gillette Shaving Cream';
 let quantity2= 1;
 let price2 = 6.23
-let extended_price2 = quantity2 *price1;
+let extended_price2 = quantity2 *price2;
 
 //Product3
 let item3= 'Listerine Mouthwash';
@@ -41,7 +41,7 @@ let taxAmount = subtotal * taxRate;
 let total = subtotal + taxAmount;
 
 //Populate the table rows using DOM manipulation
-let table = document.getElementbyID('invoiceTable');
+let table = document.getElementbyId('invoiceTable');
 
 let row= table.insertRow(); //Create a new row for each item
 row.insertCell(0).innerHTML = `${item1}`;
@@ -75,7 +75,7 @@ row.insertCell(2).innerHTML = `$` + `${price5}`;
 row.insertCell(3).innerHTML = (`$` + `${extended_price5}`);
 
 // Set the subtotal, tax, and total cells
-document.getElementById('subtotal_cell').innerHtml = '$' + subtotal.toFixed(2)
-document.getElementById('tax_cell').innerHtml = '$' + taxAmount.toFixed(2)
-document.getElementById('total_cell').innerHtml = '$' + total.toFixed(2)
+document.getElementById('subtotal_cell').innerHtml = '$' + subtotal.toFixed(2);
+document.getElementById('tax_cell').innerHtml = '$' + taxAmount.toFixed(2);
+document.getElementById('total_cell').innerHtml = '$' + total.toFixed(2);
 
