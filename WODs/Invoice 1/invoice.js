@@ -7,34 +7,34 @@ let price1 = 1.23
 let extended_price1 = quantity1 *price1;
 
 //Product2
-let item2= 'Apple Watch Ultra screen protector';
-let quantity2= 2;
+let item2= 'Gillette Shaving Cream';
+let quantity2= 1;
 let price2 = 6.23
 let extended_price2 = quantity2 *price1;
 
 //Product3
-let item3= 'Apple Watch Ultra screen protector';
-let quantity3= 2;
-let price3 = 6.23
+let item3= 'Listerine Mouthwash';
+let quantity3= 1;
+let price3 = 5.75
 let extended_price3 = quantity3 *price3;
 
 //Product4
-let item4= 'Apple Watch Ultra screen protector';
+let item4= 'Cerave Moisturizer';
 let quantity4= 2;
-let price4 = 6.23
+let price4 = 7.89
 let extended_price4 = quantity4 *price4;
 
 //Product5
-let item5= 'Apple Watch Ultra screen protector';
-let quantity5= 2;
-let price5 = 6.23
+let item5= 'Aveeno Lavender Lotion';
+let quantity5= 1;
+let price5 = 5.50
 let extended_price5 = quantity5 *price5;
 
 //Calculate subtotal
 let subtotal = extended_price1 + extended_price2 + extended_price3 + extended_price4 + extended_price5;
 
 //Calculate sales tax
-let taxRate = 0.0575; // 5.75%
+let taxRate = 0.0575; // x5.75%
 let taxAmount = subtotal * taxRate;
 
 //Calulate  grand total
