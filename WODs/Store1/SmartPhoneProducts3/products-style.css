@@ -1,8 +1,10 @@
+/* products-style2.css  */
+
 /* General */
 body {
   width: 800px;
   margin: 0 auto;
-}
+} 
 
 /* Typography */
 h1, h2 {
@@ -14,7 +16,7 @@ h1, h2 {
   display: flex;
   flex-flow: row wrap;
   justify-content: space-around;
-  background: url("/Lab6/SmartPhoneProducts1_3/images/phone_globe.jpeg") no-repeat 50% center;
+  background: url("images/phone_globe.jpg") no-repeat 50% center;
   color: black;
 }
 
@@ -69,4 +71,31 @@ border-collapse: collapse; /* Remove spacing between table cells */
 td {
 padding: 8px; /* Add padding to the cells for spacing */
 text-align: center; /* Adjust the cell text alignment if needed */
+}
+
+/* Style for quantity label and input */
+.item label, .item input {
+display: block;
+margin: 10px auto;
+text-align: center;
+}
+
+/* Used chat gpt to style the purchase button */
+.purchase-btn {
+display: block;
+width: 200px;
+height: 50px;
+margin: 20px auto;
+background-color: #df9c27;
+color: #000000;
+border: none;
+border-radius: 8px;
+font-size: 25px;
+cursor: pointer;
+transition: background-color 0.5s ease;
+}
+
+/*Used chat gpt to style the button*/
+.purchase-btn:hover {
+background-color: #c2a005;
 }

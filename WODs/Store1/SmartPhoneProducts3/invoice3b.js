@@ -1,6 +1,22 @@
-//import data from products.js into this file
-import { itemData, quantity } from './products.js';
+//invoice3.js
 
+//chat gpt
+//fetch the query string parameters
+const params = new URL(document.location).searchParams;
+//loop through the expected quantity parameters and update the quantity array
+
+//chat gpt
+let quantity=[];
+
+for (let i = 0; i < itemData.length; i++) {
+  let quantityValue = params.get(`quantity${i}`);
+  if (quantityValue !== null) {
+      quantity[itemData[i].quantityIndex] = Number(quantityValue);
+  }
+}
+
+//import data from products.js into this file
+import { itemData } from './products.js';
 //initialize variables for subtotal, tax, shipping charge, and total
 let subtotal=0;
 let taxRate = 0.0575;
@@ -30,7 +46,7 @@ document.getElementById('subtotal_cell').innerHTML = '$' + subtotal.toFixed(2);
 document.getElementById('tax_cell').innerHTML = '$' + taxAmount.toFixed(2);
 document.getElementById('shipping_cell').innerHTML = '$' +shippingCharge.toFixed(2);
 
-//there are many ways to code the validateQuantity function... here is one.
+// validateQuantity function
 function validateQuantity(quantity) {
     if (isNaN(quantity)) {
       return "Not a number";
@@ -43,6 +59,8 @@ function validateQuantity(quantity) {
     } else {
       return ""; // No errors
     }
+
+    return errorMessage;
   }
   
 
@@ -71,6 +89,8 @@ function generateItemRows() {
         let row = table.insertRow();
         row.insertCell(0).innerHTML = item.brand;
         row.insertCell(1).innerHTML = validationMessage;
+        row.insertCell(2).innerHTML = "";
+        row.insertCell(3).innerHTML = "";
       } else if (itemQuantity > 0) {
         // Calculate the extended price if quantity is valid and positive
         let extendedPrice = item.price * itemQuantity;
