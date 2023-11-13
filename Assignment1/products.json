@@ -1,0 +1,36 @@
+[
+        {  
+        "name": "Coral Carlsbad",  
+        "price": 24.00,  
+        "image": "/images/coralcarl.jpeg",
+        "qty_ava": 20
+        },
+
+        {  
+        "name": "Lavendar Haze",  
+        "price": 24.00,  
+        "image": "/images/lavendarhaze.jpeg",
+        "qty_ava": 25
+        },
+
+        {  
+        "name": "Seaside Sanctuary",  
+        "price": 35.00,  
+        "image": "/images/seaside.jpeg",
+        "qty_ava": 35
+        },
+
+        {  
+        "name": "Pacific Paradise",  
+        "price": 24.00,  
+        "image": "/images/pacific.jpeg",
+        "qty_ava": 45
+        },
+        
+        {  
+        "name": "Daisy Del Mar",  
+        "price": 35.00,  
+        "image": "/images/daisy.jpeg",
+        "qty_ava": 50
+        }
+      ]
