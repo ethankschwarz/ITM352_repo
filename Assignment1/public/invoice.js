@@ -1,41 +1,113 @@
+//Ethan Schwarz
 //invoice.js
+//This set of code initilizaies the variables
+let extendedPrices = [];
+let extendedPrice = 0;
+let subtotal = 0;
+let taxAmount = 0;
+let shipping = 0;
 
+//This opens up the URL params
 let params = (new URL(document.location)).searchParams;
-let q = Number(params.get('quantity'));
+        //This initializes empty order array
+        let order = [];
+        //For each prod, this will push the value to the array
+        params.forEach((value,key) => {
+            if (key.startsWith('prod')) {
+                    order.push(parseInt(value));
+                }
+        });
 
-let brand = products[0]['brand'];
-let brand_price = products[0]['price'];
+        //console.log(order);
+        
+//This generates all the item rows
+generateItemRows();
 
+//This calculates subtotal/tax
 
-let validationMessage = validateQuantity(q);
+ let tax = (subtotal*0.0575);
 
-if (validationMessage === "") {
-    document.getElementById('receiptContent').innerHTML=`<h2>Thank you for purchasing ${q} ${brand}. Your total is \$${q * brand_price}!</h2>`;
-} else {
-    alert(validationMessage+'<br>'+`Error: ${q} is not a quantity. Hit the back button to fix.`);
-    document.getElementById('receiptContent').innerHTML=(validationMessage+'<br>'+`Error: ${q} is not a quantity. Hit the back button to fix.`);
+//Checks the shipping price
+if(subtotal <= 50)
+{
+    shipping = 2;
+}else if(subtotal <=100)
+{
+    shipping = 5;
+}
+else{
+    shipping = subtotal*.05;
 }
 
-function validateQuantity(quantity) {
-    let errorMessage = "";
+//This will calculate the total
+let total = tax+subtotal+shipping;
 
-    switch (true) {
-        case isNaN(quantity):
-            errorMessage = "Not a number. Please enter a non-negative quantity to order.";
-            break;
-        case quantity < 0 && !Number.isInteger(quantity):
-            errorMessage = "Negative inventory and not an Integer. Please enter a non-negative quantity to order.";
-            break;
-        case quantity < 0:
-            errorMessage = "Negative inventory. Please enter a non-negative quantity to order.";
-            break;
-        case !Number.isInteger(quantity):
-            errorMessage = "Not an Integer. Please enter a non-negative quantity to order.";
-            break;
-        default:
-            errorMessage = ""; // No errors
-            break;
+//following code inserts footer row values
+document.getElementById("subtotal_cell").innerHTML = "$" + subtotal.toFixed(2);
+document.getElementById("tax_cell").innerHTML = "$" + tax.toFixed(2);
+document.getElementById("shipping_cell").innerHTML = "$"+shipping.toFixed(2);
+document.getElementById("total_cell").innerHTML = "$"+total.toFixed(2);
+
+//Validates the quantity,returns a string if not a number, negative, not an integer, or combination of both
+//If no errors in quantity, returns empty string
+
+function validateQuantity(quantity){
+    if(isNaN(quantity)){
+        return "Please Enter a Number";
+    }else if (quantity<0 && !Number.isInteger(quantity)){
+        return "Please Enter a Positive Integer";
+    }else if (quantity <0){
+        return "Please Enter a Positive Number";
+    }else if(!Number.isInteger(quantity)){
+        return "Please Enter an Integer";
+    }else{
+        return"";
     }
 
-    return errorMessage;
+}
+//Generate all the item rows
+function generateItemRows(){
+
+    //This sets table to the invoice table on the invoice.html
+    let table = document.getElementById("invoiceTable");
+
+    //Checks if it has errors
+    //Set to false for now (was helped by Reyn in this part)
+    let hasErrors = false; 
+
+    //For each member of the array
+    for(let i=0;i<products.length;i++){
+        
+        //Sets item and itemQuantity from the products array, and the array gotten from the url
+        let item = products[i];
+        let itemQuantity = order[i];
+        
+        //Validate the quantity, we are just kinda looking for if its negative so we dont show it
+        let validationMessage = validateQuantity(itemQuantity);
+        
+        //If there is an error
+        if(validationMessage !== ""){
+            hasErrors = true;
+            let row =table.insertRow();
+            row.insertCell(0).insertHTML = item.name;
+            row.insertCell(1).innerHTML = validationMessage;
+        } 
+        //otherwise, lets create the row in the invoice and update the extended price and subtotal
+        else if(itemQuantity >0){
+            //update the variables
+            extendedPrice = item.price * itemQuantity;
+            subtotal += extendedPrice;
+
+            //Creates a new row and insert the info
+            let row = table.insertRow();
+            row.insertCell(0).innerHTML = `<img src="${item.image}" class="img-invoice" name = "img">`;
+            row.insertCell(1).innerHTML = item.name;
+            row.insertCell(2).innerHTML = itemQuantity;
+            row.insertCell(3).innerHTML = "$" + item.price.toFixed(2);
+            row.insertCell(4).innerHTML = "$"+extendedPrice.toFixed(2);
+
+        }
+
+    }
+
 }
