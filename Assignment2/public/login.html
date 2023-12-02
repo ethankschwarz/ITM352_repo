@@ -1,0 +1,37 @@
+<!--Login Page-->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <!--BOOTSTRAP 4, STYLES.CSS, GOOGLE FONTS-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Abril+Fatface&display=swap">
+    
+</head>
+<body>
+    <div class="jumbotron">
+        <div class="container text-center">
+            <h1><span id="top_title">Kuapula Online Webstore</span></h1>
+
+            <br>
+            
+            <h2>Login Page</h2>
+            <br>
+            <form action="/login" method="POST" name = "login_form">
+                <input type="text" name="username" id="usernameInput" size="40" placeholder="Enter Username"><br />
+                <input type="password" name="password" size="40" placeholder="Enter Password"><br />
+                
+                <br>
+
+                <input type="submit" value="Login" class="login-btn">
+            </form>
+
+            <!-- Add button to registration page -->
+            <a href="/registration.html">Don't have an account? Register here. </a>
+        </div>
+    </div>
+    <script src = "./login.js" defer></script>
+</body>
+</html>
