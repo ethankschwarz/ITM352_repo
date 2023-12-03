@@ -1,3 +1,4 @@
+//registration.js
 let params = (new URL(document.location)).searchParams;
 
 window.onload = function() {
@@ -6,7 +7,7 @@ window.onload = function() {
     //Get values previously inputted and place back into input fields
     register_form.elements['name'].value = params.get('name');
     register_form.elements['email'].value = params.get('email');
-    
+
     //Get error messages and display them
     for (let i = 0; i <= document.getElementsByClassName('form-group').length; i++) {
         let inputName = register_form.elements[i].name;

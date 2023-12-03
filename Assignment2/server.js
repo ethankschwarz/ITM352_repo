@@ -27,9 +27,10 @@ app.get("/products.js", function (request, response, next) {
     let products_str = `var products = ${JSON.stringify(products)};`;
     response.send(products_str);
 });
-
-
 app.use(express.urlencoded({ extended: true }));
+
+
+
 
 //function to validate the quantity
 function validateQuantity(quantity, availableQuantity){
@@ -59,12 +60,7 @@ function validateQuantity(quantity, availableQuantity){
 
 
 
-
-
-
-
-
-//------------------------------Assigntment 2-----------------------------//
+//------------------------------Assigntment 2 Requirements for processing login, registration-----------------------------//
 // Declare a variable to store user data
 let user_data;
 
@@ -92,15 +88,18 @@ if (fs.existsSync(filename)){
 // Declare a temporary variable to store user inputs
 let temp_user = {}; // temp storage for user inputs to be passed along
 
-
-
-
+/*
+for (let i in products){
+    products.forEach((prod, i) => {prod.qty_sold = 0});
+}
+*/                         
 
 
 //===========================App Post Purchase Form==========================//
 app.post("/process_purchase", function (request, response,) {
 //extract content of request's body
 let POST = request.body;
+console.log("Received from data:", POST);
 //assuming input box are empty
 let has_qty = false;
 //creating object to store error message for each input
@@ -108,20 +107,21 @@ let errorObject = {};
 
 //iterating through each input
 for (let i in products) {
-    let qty = POST[`qty${i}`];
+    let qty = POST[`qty${[i]}`];
     has_qty = has_qty || (qty > 0);
 
-    let errorMessages = validateQuantity(qty, products[i].qty_available);
+    let errorMessage = validateQuantity(qty, products[i].qty_available);
 
     //store error messages
-    if (errorMessages.length > 0) {
-        errorObject[`qty${i}`] = errorMessages.join(', ');
+    if (errorMessage.length > 0) {
+        errorObject[`qty${[i]}_error`] = errorMessage.join(', ');
     }
 }
 //if all input boxes are empty with no error
 if (has_qty == false && Object.keys(errorObject).length == 0) {
     //redirect to products_display with error in url
-    response.redirect("./products_display.html");
+    response.redirect("./products_display.html?error");
+
 } else if (has_qty == true && Object.keys(errorObject).length == 0) {
     //update quantities and redirect to invoice
     for (let i in products) {
@@ -145,19 +145,18 @@ if (has_qty == false && Object.keys(errorObject).length == 0) {
 else if (Object.keys(errorObject).length > 0) {
     response.redirect("./products_display.html?" + qs.stringify(POST) + `&inputError`);
 }
+
+else {
+    if (has_qty == false) {
+        response.redirect("./products_display.html?" + qs.stringify(POST) + `&error`);
+    }
+}
 });
     
 
-
-
-
-
-
-
-
 //===========================App Post Login Form==========================//
 // This code block defines a route handler for the POST request to the "/process_login" endpoint.
-app.post("/process_login", function (request, response) {
+app.post("/process_login", function (request, response) { 
     // Retrieve the data from the request body
     let POST = request.body;
     let entered_email = POST['email'].toLowerCase();
@@ -282,7 +281,7 @@ app.post("/process_register", function (request, response) {
     validateConfirmPassword(reg_password, reg_confirm_password);
 
     //Validate Email to see if it's only letters and "@" and "."
-
+    validateEmail(reg_email);
     //Validate Name to see if it's only letters
 
 
@@ -330,5 +329,25 @@ function validateConfirmPassword(password, confirm_password) {
 
     if (confirm_password !== password) {
         registration_errors ['confirm_password_type'] = 'Passwords do not match';
+    }
+}
+
+// Validate Password Function
+function validatePassword(password) {
+    if (password.length < 10 || password.length > 16) {
+        registration_errors.password_error = "Password must be between 10 and 16 characters.";
+    } else if (/\s/.test(password)) {
+        registration_errors.password_error = "Password cannot contain spaces.";
+    }
+    // Add more password validation rules as needed
+}
+
+
+// Validate Email Function
+function validateEmail(email) {
+    // Basic email validation using a regular expression
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    if (!emailRegex.test(email)) {
+        registration_errors.email_error = "Invalid email format.";
     }
 }
