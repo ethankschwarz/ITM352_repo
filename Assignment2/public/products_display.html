@@ -39,9 +39,10 @@
     <!---->
 
     <!--Button to carry over quantities to invoice.html using POST method-->
-    <form action="/process_purchase" method="POST" id="purchase">
+    <form action="/process_purchase" method="POST" id="purchase_form" id="purchase_form">
       <h1><span id="top_title"></span></h1>
       <div>
+        <div id="user-carry"></div>
           <main class="main">
             <div class="container">
               <div class ="row">
@@ -54,6 +55,7 @@
            <footer>
                <input type="submit" value="Purchase" class="purchase-btn">
           </footer>
+        
       </form>
       <Br>
       <br>      
@@ -61,8 +63,4 @@
    <!-- Display products dynamically using JavaScript -->
    <script src="/products_display.js"></script>
 
-   <!--Linked background video (helped by Caleb Chang on this part)-->
-   <video autoplay muted loop plays-inline id="myVideo">
-    <source src="images/sandiego.mp4" type="video/mp4">
-  </video>
 </html>

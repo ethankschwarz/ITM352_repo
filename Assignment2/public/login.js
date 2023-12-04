@@ -9,3 +9,22 @@ window.onload = function() {
     }
     document.getElementById('email').value = params.get('email');
 }
+
+
+// Get references to the password input and the show password checkbox
+let passwordInput = document.getElementById('password');
+let showPasswordCheckbox = document.getElementById('showPasswordCheckbox');
+
+// Add an event listener to the checkbox to toggle password visibility
+showPasswordCheckbox.addEventListener('change', function () {
+    passwordInput.type = this.checked ? 'text' : 'password';
+});
+
+params.forEach((value, key) => {
+    const productInput = document.createElement("input");
+    productInput.type = "hidden";
+    productInput.name = key;
+    productInput.value = value;
+
+    document.getElementById("product-inputs").appendChild(productInput);
+});

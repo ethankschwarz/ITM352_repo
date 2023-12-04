@@ -98,6 +98,7 @@ for (let i in products){
 app.post("/process_purchase", function (request, response,) {
 //extract content of request's body
 let POST = request.body;
+
 console.log("Received from data:", POST);
 //assuming input box are empty
 let has_qty = false;
@@ -106,6 +107,7 @@ let errorObject = {};
 
 //iterating through each input
 for (let i in products) {
+    
     let qty = POST[`qty${[i]}`];
     has_qty = has_qty || (qty > 0);
 
@@ -138,7 +140,11 @@ if (has_qty == false && Object.keys(errorObject).length == 0) {
     //redirect to invoice page
     let params = new URLSearchParams(temp_user);
     console.log(params);
-    response.redirect(`./login.html?${params.toString()}`);
+    if (request.body.user != undefined) {
+        response.redirect(`./invoice.html?${params.toString()}`);
+    } else {
+        response.redirect(`./login.html?${params.toString()}`);
+    }
 }
 //If there is an error
 else if (Object.keys(errorObject).length > 0) {
@@ -179,6 +185,8 @@ app.post("/process_login", function (request, response) {
         if (user_data[entered_email].password == entered_password) {
             // If the password is correct, create a temporary user object with the entered email and name
             temp_user['email'] = entered_email;
+            user_arr = entered_email.split("@");
+            temp_user['user'] = user_arr[0];
             temp_user['name'] = user_data[entered_email].name;
 
             // Log the temporary user object
@@ -187,7 +195,7 @@ app.post("/process_login", function (request, response) {
             // Create a URLSearchParams object with the temporary user object
             let params = new URLSearchParams(temp_user);
             // Redirect the user to the invoice page with a query parameter indicating success and the temporary user information
-            response.redirect(`./invoice.html?valid&${params.toString()}`);
+            response.redirect(`./products_display.html?valid=true&${params.toString()}&submit=yes`);
             return;
         }
         // If the entered password is empty
@@ -326,7 +334,7 @@ app.post("/process_register", function (request, response) {
         delete request.body.confirm_password;
 
         let params = new URLSearchParams(request.body);
-        response.redirect(`/register.html?${params.toString()}&${qs.stringify(registration_errors)}`);
+        response.redirect(`/registration.html?${params.toString()}&${qs.stringify(registration_errors)}`);
     }
 });
 function validateConfirmPassword(password, confirm_password) {

@@ -13,7 +13,7 @@ let params = (new URL(document.location)).searchParams;
         let order = [];
         //For each prod, this will push the value to the array
         params.forEach((value,key) => {
-            if (key.startsWith('prod')) {
+            if (key.startsWith('qty')) {
                     order.push(parseInt(value));
                 }
         });

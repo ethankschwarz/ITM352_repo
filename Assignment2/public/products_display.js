@@ -142,3 +142,22 @@ function checkInputTextbox(textBox, availableQuantity) {
         textBox.parentElement.style.borderColor = "black";
     }
 }
+
+if (params.has('user')) {
+    document.getElementById('user-carry').innerHTML = `
+    <input type="hidden" id="user" name="user" value="${params.get('user')}">
+    `
+}
+
+if (params.has('submit')) {
+    for (i = 0; i < 6; i++) {
+        let product_values = document.getElementById(`qty${i}_entered`)
+        product_values.value = parseInt(params.get(`qty${i}`));
+    }
+}
+
+document.addEventListener("DOMContentLoaded", function (){
+    if (params.has("submit")) {
+        document.getElementById("purchase_form").submit();
+    }
+})
