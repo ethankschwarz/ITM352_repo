@@ -34,7 +34,7 @@ for (let i = 0; i < products.length; i++) {
                 <h5 class="card-title">${products[i].name}</h5>
                 <p class="towel-text">
                     Price: $${(products[i].price).toFixed(2)}<br>
-                    Available: ${products[i].qty_ava}<br>
+                    Available: ${products[i].qty_available}<br>
                     Total Sold: ${products[i].total_sold}
                 </p>
                 <input type="text" placeholder="0" name="quantity_textbox" id="${[i]}" class="form-control mb-2" oninput="validateQuantity(this)" value="${order[i] !== 0 && order[i] !== undefined ? order[i] : ''}" onload="validateQuantity(this)">
