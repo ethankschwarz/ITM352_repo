@@ -22,7 +22,7 @@ app.use(cookieParser());
 // Route to set a cookie with your name
 app.get('/set_cookie', (req, res) => {
     // Set a cookie with your name
-    res.cookie('username', 'YourName', { maxAge: 5000 }); // Cookie expires in 15 minutes
+    res.cookie('username', 'Ethan', { maxAge: 5000 }); // Cookie expires in 15 minutes
     res.send('Cookie has been set with your name.');
   });
   
