@@ -2,6 +2,19 @@ const express = require('express');
 const app = express();
 app.use(express.urlencoded({ extended: true }));
 
+const session = require('express-session');
+app.use(session({ secret: "MySecretKey", resave: true, saveUninitialized: true }));
+
+// Route to GET use_session
+app.get('/use_session', (req, res) => {
+  if (req.session && req.session.id) {
+    res.send(`Welcome, your session ID is ${req.session.id}`);
+  } else {
+    res.send('No session found.');
+  }
+});
+
+
 const cookieParser = require('cookie-parser');
 app.use(cookieParser());
 //npm install cookie-parse
@@ -9,7 +22,7 @@ app.use(cookieParser());
 // Route to set a cookie with your name
 app.get('/set_cookie', (req, res) => {
     // Set a cookie with your name
-    res.cookie('username', 'Ethan', { maxAge: 5000 }); // Cookie expires in 15 minutes
+    res.cookie('username', 'YourName', { maxAge: 5000 }); // Cookie expires in 15 minutes
     res.send('Cookie has been set with your name.');
   });
   
@@ -24,7 +37,8 @@ app.get('/use_cookie', (req, res) => {
         res.send('No cookie found. Please set the cookie first.');
     }
 });
-  
+
+
 
 //above here is lab 15ex1
 
@@ -70,12 +84,9 @@ fs.writeFileSync(filename, JSON.stringify(user_reg_data), 'utf-8');
 //JSON.stringify(user_reg_data) is used to convert the JavaScript object user_reg_data into a JSON-formatted string before writing it to the file.
 
 
-
-
-
 //modified for extra credit #1, second option
 app.get("/login", function (request, response) {
-    let username = request.query.username || ''; // Default to an empty string if not provided
+        let username = request.query.username || ''; // Default to an empty string if not provided
     let login_form = `
         <body>
         <form action="" method="POST">
@@ -101,7 +112,18 @@ app.post("/login", function (request, response) {
     if (typeof user_reg_data[username_entered] != 'undefined') {
         // Check if the password matches with the username
         if (password_entered == user_reg_data[username_entered].password) {
-            response_msg = `${username_entered} is logged in.`;
+            //response_msg = `${username_entered} is logged in.`;
+            
+            const userSession = request.session;
+
+            // Check if this is the user's first visit
+            if (!userSession.lastLogin) {
+                userSession.lastLogin = 'First visit!';
+            } else {
+                // Update last login time to the current time
+                userSession.lastLogin = new Date().toLocaleString();
+            }
+            response_msg = `${username_entered} is logged in. Last login: ${userSession.lastLogin}`;
         } else {
             response_msg = `Incorrect password.`;
             errors = true;
@@ -112,7 +134,6 @@ app.post("/login", function (request, response) {
     }
 
     if (!errors) {
-        response.cookie('username', username_entered);
         response.send(response_msg);
     } else {
         response.redirect(`./login?username=${encodeURIComponent(request.body['username'])}`);
@@ -124,8 +145,7 @@ app.listen(8080, () => console.log(`listening on port 8080`));
 
 app.get("/register", function (request, response) {
     // Give a simple register form
-
-    let register_form = `
+    str = `
         <body>
         <form action="" method="POST">
         <input type="text" name="username" size="40" placeholder="enter username" ><br />
@@ -136,7 +156,7 @@ app.get("/register", function (request, response) {
         </form>
         </body>
     `;
-    response.send(register_form);
+    response.send(str);
  });
 
  app.post("/register", function (request, response) {
