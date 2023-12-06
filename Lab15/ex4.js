@@ -5,6 +5,9 @@ app.use(express.urlencoded({ extended: true }));
 const session = require('express-session');
 app.use(session({ secret: "MySecretKey", resave: true, saveUninitialized: true }));
 
+
+
+//ex1.js
 // Route to GET use_session
 app.get('/use_session', (req, res) => {
   if (req.session && req.session.id) {
@@ -23,7 +26,7 @@ app.use(cookieParser());
 // Route to set a cookie with your name
 app.get('/set_cookie', (req, res) => {
     // Set a cookie with your name
-    res.cookie('username', 'YourName', { maxAge: 5000 }); // Cookie expires in 15 minutes
+    res.cookie('username', 'Ethan', { maxAge: 5000 }); // Cookie expires in 15 minutes
     res.send('Cookie has been set with your name.');
   });
   
@@ -38,10 +41,6 @@ app.get('/use_cookie', (req, res) => {
         res.send('No cookie found. Please set the cookie first.');
     }
 });
-
-
-
-//above here is lab 15ex1
 
 const fs = require('fs');
 const { constants } = require('buffer');
@@ -81,10 +80,6 @@ user_reg_data[username].password = 'newpass';
 user_reg_data[username].email = 'newuser@user.com';
 
 fs.writeFileSync(filename, JSON.stringify(user_reg_data), 'utf-8');
-//This line writes the updated user_reg_data back to the JSON file specified by the filename variable. It uses the fs.writeFileSync method, which is a synchronous operation that writes data to a file.
-//JSON.stringify(user_reg_data) is used to convert the JavaScript object user_reg_data into a JSON-formatted string before writing it to the file.
-
-
 
 app.get("/login", function (request, response) {
     let username = request.cookies.username || ''; // Default to an empty string if not provided
@@ -147,7 +142,7 @@ app.post("/login", function (request, response) {
 app.listen(8080, () => console.log(`listening on port 8080`));
 
 app.get("/register", function (request, response) {
-    // Give a simple register form
+    // Register form
     str = `
         <body>
         <form action="" method="POST">
@@ -163,14 +158,12 @@ app.get("/register", function (request, response) {
  });
 
  app.post("/register", function (request, response) {
-    // process a simple register form
+    // process register form
     let new_user = request.body.username;
     let errors = false;
     let resp_msg = "";
 
-    //let params = new URLSearchParams(request.body);
-
-    // If the username already exists
+    // If  username already exists,
     if (typeof user_reg_data[new_user] != 'undefined') {
         resp_msg = 'Username unavailable. Please enter a different username.';
         errors = true;
@@ -184,7 +177,7 @@ app.get("/register", function (request, response) {
 
         fs.writeFileSync(filename, JSON.stringify(user_reg_data), 'utf-8');
 
-            //updated for extracredit 1, 2nd option, which sends the username in the redirect back to login after successful registration
+            //(helped by Anthony Lee (im cluelsss) 
             response.redirect(`./login?username=${encodeURIComponent(request.body['username'])}`);
     } else {
         resp_msg = 'Repeat password does not match with password.'
@@ -193,8 +186,6 @@ app.get("/register", function (request, response) {
 
     if (errors) {
         response.send(resp_msg);
-        // Alternatively, you can redirect to the register page with an error query parameter:
-        // response.redirect(`./register?error=${resp_msg}&${params.toString()}`);
     }
     
  });
